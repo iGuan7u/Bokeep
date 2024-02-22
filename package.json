@@ -14,7 +14,8 @@
 		"@mui/material": "^5.15.10",
 		"@mui/x-date-pickers": "^7.0.0-alpha.0",
 		"dayjs": "^1.11.10",
-		"preact": "^10.13.1"
+		"preact": "^10.13.1",
+		"preact-router": "^4.1.2"
 	},
 	"devDependencies": {
 		"@preact/preset-vite": "^2.5.0",

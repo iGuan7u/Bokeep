@@ -19,7 +19,7 @@ body {
 th {
 	position: sticky;
 	background-color: white;
-	top: 0;
+	top: 56px;
 }
 
 table thead th {
@@ -117,12 +117,12 @@ td {
 }
 
 .float_button {
-	position: fixed;
+	position: fixed !important;
 	bottom: calc(env(safe-area-inset-bottom) + 20px);
-	right: 20px;
-	background-color: white;
-	border-radius: 26px;
-	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	right: calc(env(safe-area-inset-right) + 20px);
+	/* background-color: white; */
+	/* border-radius: 26px; */
+	/* box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 
 .create_dialog_date_picker input {
@@ -137,5 +137,22 @@ td {
 	padding: 12.5px 14px;
 }
 
-@media (max-width: 639px) {
+.navigation_bar_placeholder {
+	height: 56px;
+}
+
+.fixed_navigation_bar {
+	border-bottom: thin solid #E5EAF2;
+	background-color: white;
+	left: 0;
+}
+
+@media (min-width: 600px) {
+	th {
+		top: 64px;
+	}
+
+	.navigation_bar_placeholder {
+		height: 64px;
+	}
 }

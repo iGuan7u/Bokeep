@@ -1,4 +1,4 @@
-import { allCostType, getCostTypeDesc, getTagColor } from './model/type';
+import { allCostType, getCostTypeDesc, getTagColor } from '../model/type';
 
 import { Component, ComponentChild, ComponentChildren, Ref, type JSX } from 'preact';
 
@@ -15,11 +15,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import MenuItem from '@mui/material/MenuItem';
 import dayjs from 'dayjs';
 
-import CostRecord from './model/record';
+import CostRecord from '../model/record';
 
 interface CreateDialogProps {
   modifyRecord?: CostRecord;
-  onDeleted: (costRecord: CostRecord) => void;
+  onDeleted?: (costRecord: CostRecord) => void;
   onFinished: (costRecord: CostRecord) => void;
 }
 
@@ -88,7 +88,7 @@ class CreateDialog extends Component<CreateDialogProps & DialogProps, CreateDial
         },
       }}
     >
-      <DialogTitle>新增项目</DialogTitle>
+      <DialogTitle>{this.props.modifyRecord != null ? '修改项目' : '新增项目'}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
