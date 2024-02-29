@@ -1,21 +1,27 @@
 import { render, ComponentChild, Component, Attributes, ComponentChildren, Ref } from 'preact';
 import Router from 'preact-router';
 
-import { Theme, ThemeProvider, createTheme, AppBar, Toolbar, Fab } from '@mui/material';
+import { ThemeProvider, AppBar, Toolbar, Fab } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
+import './style.css';
+import mainTheme from './static/theme';
+import { drawerWidth} from './static/static';
 import CostRecord from './model/record';
 import CreateDialog from './module/create_dialog';
+import NavDrawer from './module/drawer';
 import { addRecord, openIndexedDB } from './utils/indexd_db';
-import './style.css';
 import Database from './module/database';
+import Match from 'preact-router/match';
 
 interface AppState {
   isModalOpen: boolean;
-  theme: Theme;
+  mobileOpen: boolean;
+  isClosing: boolean;
 }
 
 class App extends Component<{}, AppState> {
@@ -23,35 +29,31 @@ class App extends Component<{}, AppState> {
     super();
     this.state = {
       isModalOpen: false,
-      theme: createTheme({
-        typography: {
-          fontFamily: [
-            "ui-sans-serif",
-            "-apple-system",
-            "BlinkMacSystemFont",
-            "Segoe UI",
-            "Helvetica",
-            "Apple Color Emoji",
-            "Arial",
-            "sans-serif",
-            "Segoe UI Emoji",
-            "Segoe UI Symbol"
-          ].join(','),
-        },
-        palette: {
-          primary: {
-            main: "#541DAB",
-          }
-        }
-      }),
+      mobileOpen: false,
+      isClosing: false,
     };
-
   }
   handleClose = () => {
     this.setState({
       isModalOpen: false,
     });
   }
+
+  handleDrawerClose = () => {
+    this.setState({
+      isClosing: true,
+      mobileOpen: false,
+    });
+  };
+
+  handleDrawerToggle = () => {
+    if (!this.state.isClosing) {
+      this.setState({
+        mobileOpen: !this.state.mobileOpen,
+      });
+    }
+  };
+
 
   handleClickOpen = () => {
     this.setState({
@@ -65,34 +67,61 @@ class App extends Component<{}, AppState> {
     db.close();
   }
 
+  handleDrawerTransitionEnd = () => {
+    this.setState({
+      isClosing: false,
+    });
+  };
+
+
   render(props?: Readonly<Attributes & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<{}>, context?: any): ComponentChild {
-    return <ThemeProvider theme={this.state.theme}>
-      <AppBar className="fixed_navigation_bar" position="fixed" sx={{ bgcolor: "white" }} elevation={0}>
+    return <ThemeProvider theme={mainTheme}>
+      <AppBar 
+        className="fixed_navigation_bar" 
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }} 
+        elevation={0}
+      >
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
             aria-label="menu"
-            sx={{ mr: 2 }}
+            onClick={this.handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' }}}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div">
-            News
+          <Typography variant="h6" component="div" sx={{ color: "black" }}>
+            <Match>{({ matches, path, url }) => <div>{path == "/" ? "Home" : "Datas" }</div>}</Match>
           </Typography>
         </Toolbar>
       </AppBar>
-      <div className="navigation_bar_placeholder"></div>
-      <Router>
-        <div default path="/"><a href="/db">asdf</a></div>
-        <Database path='/db' />
-      </Router>
+      <NavDrawer
+        open={this.state.mobileOpen}
+        onTransitionEnd={this.handleDrawerTransitionEnd}
+        onClose={this.handleDrawerClose}
+        />
+      <Box
+        component="main"
+        sx={{
+          marginLeft: { sm: `${drawerWidth}px` }
+        }}
+      >
+        <div className="navigation_bar_placeholder"></div>
+        <Router>
+          <div default path="/"><a href="/db">asdf</a></div>
+          <Database path='/db' />
+        </Router>
+      </Box>
       <CreateDialog
         open={this.state.isModalOpen}
         onFinished={this.handleCreate}
         onClose={this.handleClose}
-      >
-      </CreateDialog>
+      />
       <Fab className={"float_button"} color="primary" aria-label="add" onClick={this.handleClickOpen}>
         <AddIcon />
       </Fab>

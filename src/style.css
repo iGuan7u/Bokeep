@@ -142,8 +142,8 @@ td {
 }
 
 .fixed_navigation_bar {
+	background-color: white !important;
 	border-bottom: thin solid #E5EAF2;
-	background-color: white;
 	left: 0;
 }
 
