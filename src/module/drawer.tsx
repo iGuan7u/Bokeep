@@ -1,4 +1,4 @@
-import { Attributes, Component, ComponentChild, ComponentChildren, Ref } from "preact";
+import { Component, ComponentChild, ComponentChildren, Ref } from "preact";
 import Match from 'preact-router/match';
 
 import { Toolbar, Divider } from '@mui/material';
@@ -16,48 +16,82 @@ interface NavDrawerProps {
   onTransitionEnd: () => void;
 }
 
-class NavDrawer extends Component<NavDrawerProps & DrawerProps, {}> {
+class NavItem {
+  icon: JSX.Element;
+  text: String;
+  isSelected: (index: number, path: String | null) => boolean
+  href: String
+}
+
+interface NavDrawerState {
+  isMobile: boolean;
+  items: Array<NavItem>;
+  settingItems: Array<NavItem>;
+}
+
+class NavDrawer extends Component<NavDrawerProps & DrawerProps, NavDrawerState> {
   constructor() {
     super();
     this.state = {
+      isMobile: false,
+      items: [{
+        icon: <Home />,
+        text: "Home",
+        isSelected: (index, path) => (index == 0 && (path === "/" || path == null)),
+        href: "/"
+      }, {
+        icon:  <Storage />,
+        text: "Datas",
+        isSelected: (index, path) => (index == 1 && path === "/db"),
+        href: "/db"
+      }],
+      settingItems: [{
+        icon: <Settings />,
+        text: "Settings",
+        isSelected: (index, path) => (index == 0 && path === "/settings"),
+        href: "/settings"
+      }]
     };
   }
-  render(props?: Readonly<NavDrawerProps & DrawerProps & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<{}>, context?: any): ComponentChild {
+  render(props?: Readonly<NavDrawerProps & DrawerProps & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<NavDrawerState>, context?: any): ComponentChild {
     const drawer = (
       <div>
-        <Toolbar />
+        <Toolbar/>
         <Divider />
         <Match>
-        {({ matches, path, url }) => <>
-          <List>
-            {['Home', 'Datas'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton 
-                  selected={(index === 0 && path === "/") || (index === 1 && path === "/db")}
-                  onClick={console.log("this")}
+          {({ matches, path, url }) => <>
+            <List>
+              {state.items.map((item, index) => (
+                <ListItem key={item.href} disablePadding>
+                  <ListItemButton
+                    href={item.href}
+                    selected={item.isSelected(index, path)}
                   >
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <Home /> : <Storage />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['Settings'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Settings />
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </>}
+                    <ListItemIcon>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            { state.settingItems.length != 0 && <Divider /> }
+            <List>
+              {state.settingItems.map((item, index) => (
+                <ListItem key={item.href} disablePadding>
+                  <ListItemButton
+                    href={item.href}
+                    selected={item.isSelected(index, path)}
+                  >
+                    <ListItemIcon>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </>}
         </Match>
       </div>
     );

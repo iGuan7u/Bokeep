@@ -17,11 +17,13 @@ import NavDrawer from './module/drawer';
 import { addRecord, openIndexedDB } from './utils/indexd_db';
 import Database from './module/database';
 import Match from 'preact-router/match';
+import Board from './module/board';
 
 interface AppState {
   isModalOpen: boolean;
   mobileOpen: boolean;
   isClosing: boolean;
+  isMobile: boolean;
 }
 
 class App extends Component<{}, AppState> {
@@ -31,6 +33,7 @@ class App extends Component<{}, AppState> {
       isModalOpen: false,
       mobileOpen: false,
       isClosing: false,
+      isMobile: false,
     };
   }
   handleClose = () => {
@@ -71,10 +74,21 @@ class App extends Component<{}, AppState> {
     this.setState({
       isClosing: false,
     });
-  };
+  }
+
+  getAppTitle = (matches, path, url: string) => {
+    console.log(matches, path, url);
+    if (url === "/") {
+      return "Home";
+    } else if (url === "/db") {
+      return "Datas";
+    } else {
+      return "Settings";
+    }
+  }
 
 
-  render(props?: Readonly<Attributes & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<{}>, context?: any): ComponentChild {
+  render(props?: Readonly<Attributes & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<AppState>, context?: any): ComponentChild {
     return <ThemeProvider theme={mainTheme}>
       <AppBar 
         className="fixed_navigation_bar" 
@@ -87,7 +101,6 @@ class App extends Component<{}, AppState> {
       >
         <Toolbar>
           <IconButton
-            size="large"
             edge="start"
             aria-label="menu"
             onClick={this.handleDrawerToggle}
@@ -96,7 +109,7 @@ class App extends Component<{}, AppState> {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ color: "black" }}>
-            <Match>{({ matches, path, url }) => <div>{path == "/" ? "Home" : "Datas" }</div>}</Match>
+            <Match>{({ matches, path, url }) => <div>{this.getAppTitle(matches, path, url)}</div>}</Match>
           </Typography>
         </Toolbar>
       </AppBar>
@@ -113,7 +126,7 @@ class App extends Component<{}, AppState> {
       >
         <div className="navigation_bar_placeholder"></div>
         <Router>
-          <div default path="/"><a href="/db">asdf</a></div>
+          <Board path="/" default />
           <Database path='/db' />
         </Router>
       </Box>

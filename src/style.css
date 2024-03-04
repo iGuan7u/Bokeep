@@ -16,7 +16,7 @@ body {
 	color: rgba(55, 53, 47, 0.65) !important;
 }
 
-th {
+table-header-th > th {
 	position: sticky;
 	background-color: white;
 	top: 56px;
@@ -34,8 +34,19 @@ td {
 	border-bottom: 1px solid #e9e9e7 !important;
 }
 
+td.no_boarder {
+	border-right: none;
+	padding: 0 6px;
+}
+
 .table_name {
 	font-weight: 500;
+}
+
+.table_sum_prefix {
+	color: rgba(55, 53, 47, 0.65);
+	font-size: 10px;
+	margin-right: 2px;
 }
 
 .flex-cnt {
@@ -147,8 +158,53 @@ td {
 	left: 0;
 }
 
+.board_cnt {
+	padding: 8px 8%;
+}
+
+.board_section_cnt {
+	margin-top: 12px;
+	padding: 4px 0;
+	color: rgb(55, 53, 47);
+	font-weight: 600;
+}
+
+.board_table_cnt {
+	margin-top: 20px;
+}
+
+.bg_purple {
+	background-color: rgb(253, 235, 236);
+}
+
+.bg_yellow {
+	background-color: rgb(251, 243, 219);
+}
+
+.color_green {
+	color: rgb(68, 131, 97);
+	fill: rgb(68, 131, 97);
+}
+
+.color_orange {
+	color: rgb(217, 115, 13);
+	fill: rgb(217, 115, 13);
+}
+
+.board_empty_desc {
+	width: 100%;
+	height: 100px;
+	color: darkgray;
+	justify-content: center;
+	align-items: center;
+}
+
+.board_table_overflow {
+	overflow-x: auto;
+}
+
 @media (min-width: 600px) {
-	th {
+	table-header-th > th {
 		top: 64px;
 	}
 

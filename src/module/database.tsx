@@ -35,7 +35,7 @@ const columns: readonly Column[] = [
   {
     id: 'price',
     label: '金额',
-    minWidth: 100,
+    minWidth: 130,
     align: 'right',
     format: function (value: number) {
       return `CN¥ ${value.toFixed(2)}`
@@ -145,7 +145,11 @@ class Database extends Component<{}, DatabaseState> {
   }
 
 
-  render(props?: Readonly<Attributes & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<{}>, context?: any): ComponentChild {
+  render(props?: Readonly<Attributes & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<DatabaseState>, context?: any): ComponentChild {
+    var sumPrice = 0;
+    state.datas.forEach((e) => {
+      sumPrice += e.price;
+    })
     return <>
       <Table padding='none'>
         <TableHead>
@@ -183,6 +187,14 @@ class Database extends Component<{}, DatabaseState> {
                 </TableRow>
               );
             })}
+
+          <TableRow>
+            <TableCell key="sum_name" className="no_boarder" align="right">
+              <span className="table_sum_prefix">COUNT: </span> {state.datas.length}</TableCell>
+            <TableCell key="sum_price" className="no_boarder" align="right" >
+              <span className="table_sum_prefix">SUM: CN¥</span> {sumPrice.toFixed(2)} </TableCell>
+            <TableCell key="sum_tag"></TableCell>
+          </TableRow>
         </TableBody>
       </Table>
       <CreateDialog
