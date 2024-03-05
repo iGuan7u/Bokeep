@@ -36,6 +36,7 @@ td {
 
 td.no_boarder {
 	border-right: none;
+	border-bottom: none !important;
 	padding: 0 6px;
 }
 
@@ -201,6 +202,7 @@ td.no_boarder {
 
 .board_table_overflow {
 	overflow-x: auto;
+	margin-top: 12px;
 }
 
 @media (min-width: 600px) {

@@ -35,7 +35,11 @@ export default class CostRecord {
   static create(jsonObject: object): CostRecord {
     const name = jsonObject["name"] as string;
     const price = Number(jsonObject["price"] as string);
-    const spendTime = dayjs(jsonObject["spendTime"] as string, 'MM/DD/YYYY').toDate().getTime();
+    let spendTime = dayjs(jsonObject["spendTime"] as string, 'MM/DD/YYYY').toDate().getTime();
+    const nowDay = dayjs();
+    const previousStartTime = nowDay.startOf('day').valueOf();
+    const previousTimeInterval = nowDay.valueOf() - previousStartTime;
+    spendTime += previousTimeInterval;
     const costType = Number(jsonObject["costType"]);
     const remarks = jsonObject["remarks"] as string;
     return new CostRecord(name, price, spendTime, costType, "Sid", remarks);
@@ -57,7 +61,13 @@ export default class CostRecord {
   static update = (record: CostRecord, jsonObject: object) => {
     const name = jsonObject["name"] as string;
     const price = Number(jsonObject["price"] as string);
-    const spendTime = dayjs(jsonObject["spendTime"] as string, 'MM/DD/YYYY').toDate().getTime();
+    let spendTime = dayjs(jsonObject["spendTime"] as string, 'MM/DD/YYYY').toDate().getTime();
+    if (record.spendTime != 0) {
+      const previousDate = dayjs(record.spendTime);
+      const previousStartTime = previousDate.startOf('day').valueOf();
+      const previousTimeInterval = record.spendTime - previousStartTime;
+      spendTime += previousTimeInterval;
+    }
     const costType = Number(jsonObject["costType"]);
     record.name = name;
     record.price = price;

@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 
 import CostRecord from "../model/record";
 import { getCostTypeDesc, getTagColor } from '../model/type';
-import { deleteRecord, openIndexedDB, readAllRecords, updateRecord } from '../utils/indexd_db';
+import { deleteRecord, openIndexedDB, readAllRecords, updateRecord, indexedDBEventEmitter } from '../utils/indexd_db';
 
 interface BoardState {
   datas: Array<CostRecord>
@@ -22,7 +22,16 @@ class Board extends Component<{}, BoardState> {
       datas: []
     };
   }
-  componentDidMount = async () => {
+  componentDidMount = () => {
+    this.updateData();
+    indexedDBEventEmitter.on(this.updateData);
+  }
+
+  componentWillUnmount(): void {
+    indexedDBEventEmitter.off(this.updateData);
+  }
+
+  private updateData = async () => {
     const db = await openIndexedDB('cost_record');
     const records = await readAllRecords(db);
     this.setState({
@@ -34,12 +43,15 @@ class Board extends Component<{}, BoardState> {
 
   render(props?: Readonly<Attributes & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<BoardState>, context?: any): ComponentChild {
     // 获取今天的起始时间戳（00:00:00）
-    const startOfDay = dayjs().startOf('day').valueOf();
-
+    const currentTime = dayjs();
+    const startOfDay = currentTime.startOf('day').valueOf();
     // 获取今天的结束时间戳（23:59:59）
-    const endOfDay = dayjs().endOf('day').valueOf();
+    const endOfDay = currentTime.endOf('day').valueOf();
+    // 计算七天前的时间
+    const sevenDaysAgo = currentTime.subtract(7, 'day').valueOf();
 
     const recordOfToday = state.datas.filter(e => e.spendTime >= startOfDay && e.spendTime <= endOfDay);
+    const recordOfWeek = state.datas.filter(e => e.spendTime >= sevenDaysAgo && e.spendTime <= endOfDay);
 
     return <Box className={"board_cnt"}>
       <Box className="board_section_cnt bg_purple">
@@ -73,8 +85,8 @@ class Board extends Component<{}, BoardState> {
                   近七天支出
                 </Typography>
               </Box>
-              <Box>
-                <BoardTable datas={[]}></BoardTable>
+              <Box className="board_table_overflow">
+                <BoardTable datas={recordOfWeek}></BoardTable>
               </Box>
             </Box>
           </Grid>
@@ -182,7 +194,7 @@ class BoardTable extends Component<BoardTableProps, {}> {
               <span className="table_sum_prefix">COUNT: </span> {props.datas.length}</TableCell>
             <TableCell key="sum_price" className="no_boarder" align="right" >
               <span className="table_sum_prefix">SUM: CN¥</span> {sumPrice.toFixed(2)} </TableCell>
-            <TableCell key="sum_tag"></TableCell>
+            <TableCell key="sum_tag" className="no_boarder"></TableCell>
           </TableRow>
       </TableBody>
     </Table>

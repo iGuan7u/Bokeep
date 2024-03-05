@@ -1,4 +1,7 @@
 import CostRecord from "../model/record";
+import SimpleEventEmitter from "./simple_event_emitter";
+
+const indexedDBEventEmitter = new SimpleEventEmitter<void>();
 
 async function openIndexedDB(databaseName: string, version = 2): Promise<IDBDatabase> {
   return new Promise(function (resolve, reject) {
@@ -37,6 +40,7 @@ async function addRecord(record: CostRecord, databse: IDBDatabase): Promise<void
 
     request.onsuccess = function (event) {
       resolve();
+      indexedDBEventEmitter.emit();
     };
 
     request.onerror = function (event) {
@@ -73,6 +77,7 @@ async function deleteRecord(record: CostRecord, database: IDBDatabase) {
   return new Promise<void>((resolve, reject) => {
     request.onsuccess = function(event) {
       resolve();
+      indexedDBEventEmitter.emit();
     };
     request.onerror = function (event) {
       reject(event);
@@ -86,6 +91,7 @@ async function updateRecord(record: CostRecord, database: IDBDatabase) {
   return new Promise<void>((resolve, reject) => {
     request.onsuccess = function(event) {
       resolve();
+      indexedDBEventEmitter.emit();
     };
     request.onerror = function (event) {
       console.error('put object error', event);
@@ -100,4 +106,5 @@ export {
   readAllRecords,
   deleteRecord,
   updateRecord,
+  indexedDBEventEmitter,
 }
