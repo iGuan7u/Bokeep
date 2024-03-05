@@ -68,7 +68,7 @@ class Board extends Component<{}, BoardState> {
         <Grid container spacing={{ sm: 1, md: 2 }} columns={{ xs: 1, sm: 1, md: 2 }}>
           <Grid item sm={1} xs={1}>
             <Box>
-              <Box className="color_green">
+              <Box className="board_table_title color_green">
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
                   今日支出
                 </Typography>
@@ -80,7 +80,7 @@ class Board extends Component<{}, BoardState> {
           </Grid>
           <Grid item sm={1} xs={1}>
             <Box>
-              <Box className="color_orange">
+              <Box className="board_table_title color_orange">
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
                   近七天支出
                 </Typography>

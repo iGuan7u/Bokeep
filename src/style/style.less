@@ -1,3 +1,6 @@
+@import url(./tag.less);
+@import url(./flex.less);
+
 :root {
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -50,80 +53,6 @@ td.no_boarder {
 	margin-right: 2px;
 }
 
-.flex-cnt {
-	display: flex;
-}
-
-.flex-cnt-jce {
-	justify-content: end;
-}
-
-.cost-type-tag {
-	padding: 0 6px;
-	border-radius: 3px;
-	border: 1pt solid;
-}
-
-.cost-type-tag_magenta {
-	background-color: rgb(255, 240, 246);
-	color: rgb(196, 29, 127);
-	border-color: rgb(255, 173, 210);
-}
-
-.cost-type-tag_red {
-	background-color: rgb(255, 241, 240);
-	border-color: rgb(255, 163, 158);
-	color: rgb(207, 19, 34);
-}
-
-.cost-type-tag_volcano {
-	color: rgb(212, 56, 13);
-	background-color: rgb(255, 242, 232);
-	border-color: rgb(255, 187, 150);
-}
-
-.cost-type-tag_orange {
-	color: rgb(212, 107, 8);
-	background-color: rgb(255, 247, 230);
-	border-color: rgb(255, 213, 145);
-}
-
-.cost-type-tag_purple {
-	color: rgb(83, 29, 171);
-	border-color: rgb(211, 173, 247);
-	background-color: rgb(249, 240, 255);
-}
-
-.cost-type-tag_blue {
-	color: rgb(9, 88, 217);
-	background-color: rgb(230, 244, 255);
-	border-color: rgb(145, 202, 255);
-}
-
-.cost-type-tag_gold {
-	color: rgb(212, 136, 6);
-	border-color: rgb(255, 229, 143);
-	background-color: rgb(255, 251, 230);
-}
-
-.cost-type-tag_lime {
-	color: rgb(124, 179, 5);
-	background-color: rgb(252, 255, 230);
-	border-color: rgb(234, 255, 143);
-}
-
-.cost-type-tag_green {
-	color: rgb(56, 158, 13);
-	border-color: rgb(183, 235, 143);
-	background-color: rgb(246, 255, 237);
-}
-
-.cost-type-tag_geek_blue {
-	color: rgb(29, 57, 196);
-	border-color: rgb(173, 198, 255);
-	background-color: rgb(240, 245, 255);
-}
-
 .table-price {
 	text-align: right;
 }
@@ -160,19 +89,23 @@ td.no_boarder {
 }
 
 .board_cnt {
-	padding: 8px 8%;
+	padding: 8px 0;
 }
 
 .board_section_cnt {
-	margin-top: 12px;
+	margin: 12px 3%;
 	padding: 4px 0;
 	color: rgb(55, 53, 47);
 	font-weight: 600;
 }
 
-.board_table_cnt {
-	margin-top: 20px;
+.board_table_title {
+	margin: 12px 3%;
 }
+
+// .board_table_cnt {
+// 	margin-top: 20px;
+// }
 
 .bg_purple {
 	background-color: rgb(253, 235, 236);
@@ -205,12 +138,25 @@ td.no_boarder {
 	margin-top: 12px;
 }
 
+// 大于等于 600px
 @media (min-width: 600px) {
 	table-header-th > th {
 		top: 64px;
 	}
 
+	.board_cnt {
+		padding: 8px 8%;
+	}
+
 	.navigation_bar_placeholder {
 		height: 64px;
+	}
+
+	.board_section_cnt {
+		margin: 12px 0;
+	}
+
+	.board_table_title {
+		margin: 12px 0;
 	}
 }

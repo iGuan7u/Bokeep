@@ -8,7 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import './style.css';
+import './style/style.less';
 import mainTheme from './static/theme';
 import { drawerWidth} from './static/static';
 import CostRecord from './model/record';
