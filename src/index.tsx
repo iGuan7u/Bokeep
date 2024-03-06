@@ -17,7 +17,7 @@ import NavDrawer from './module/drawer';
 import { addRecord, openIndexedDB } from './utils/indexd_db';
 import Database from './module/database';
 import Match from 'preact-router/match';
-import Board from './module/board';
+import Board from './module/board/board';
 
 interface AppState {
   isModalOpen: boolean;

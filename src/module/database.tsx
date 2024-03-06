@@ -12,18 +12,9 @@ import CostRecord from '../model/record';
 import { getCostTypeDesc, getTagColor } from '../model/type';
 import CreateDialog from './create_dialog';
 import { deleteRecord, openIndexedDB, readAllRecords, updateRecord } from '../utils/indexd_db';
+import TableColumn from "../utils/table_column";
 
-
-interface Column {
-  id: 'name' | 'price' | 'spendTime' | 'costType' | 'createTime' | 'creator';
-  label: string;
-  minWidth?: number;
-  align?: 'right';
-  format?: (value: number) => string;
-  customRender?: (value: any) => ComponentChild
-}
-
-const columns: readonly Column[] = [
+const columns: readonly TableColumn[] = [
   {
     id: 'name',
     label: '项目',
@@ -98,7 +89,7 @@ class Database extends Component<{}, DatabaseState> {
     };
   }
 
-  componentDidMount = async () => {
+  override componentDidMount = async () => {
     const db = await openIndexedDB('cost_record');
     const records = await readAllRecords(db);
     this.setState({

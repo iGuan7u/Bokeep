@@ -50,12 +50,35 @@ async function addRecord(record: CostRecord, databse: IDBDatabase): Promise<void
   });
 }
 
-async function readAllRecords(databse: IDBDatabase): Promise<Array<CostRecord>> {
-  const objectStore = databse.transaction('cost_record').objectStore('cost_record');
+async function readAllRecords(database: IDBDatabase): Promise<Array<CostRecord>> {
+  const objectStore = database.transaction('cost_record').objectStore('cost_record');
 
   const records = new Array<CostRecord>();
   return new Promise(function (resolve, reject) {
     var cursor = objectStore.index("spendTime").openCursor(null, "prev");
+    cursor.onsuccess = function (event) {
+      const result = cursor.result;
+      if (result != null) {
+        records.push(CostRecord.parse(result.value));
+        result.continue();
+      } else {
+        resolve(records);
+      }
+    };
+    cursor.onerror = function(event) {
+      reject(event);
+    };
+  });
+}
+
+async function readSpendTimeRangeRecords(database: IDBDatabase, startTime: number, endTime: number): Promise<Array<CostRecord>> {
+  const objectStore = database.transaction('cost_record').objectStore('cost_record');
+  const realStartTime = startTime > endTime ? endTime : startTime;
+  const readEndTime = endTime > startTime ? endTime : startTime;
+  const records = new Array<CostRecord>();
+  return new Promise(function (resolve, reject) {
+    const boundKeyRange = IDBKeyRange.bound(realStartTime, readEndTime, false, false);
+    var cursor = objectStore.index("spendTime").openCursor(boundKeyRange, "prev");
     cursor.onsuccess = function (event) {
       const result = cursor.result;
       if (result != null) {
@@ -103,6 +126,7 @@ async function updateRecord(record: CostRecord, database: IDBDatabase) {
 export {
   openIndexedDB,
   addRecord,
+  readSpendTimeRangeRecords,
   readAllRecords,
   deleteRecord,
   updateRecord,
