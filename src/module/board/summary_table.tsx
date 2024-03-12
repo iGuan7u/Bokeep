@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { Component, ComponentChild, ComponentChildren, Ref, RenderableProps } from "preact";
+import { Component, ComponentChild, RenderableProps } from "preact";
 
 import { Table } from '@mui/material';
 import TableBody from '@mui/material/TableBody';

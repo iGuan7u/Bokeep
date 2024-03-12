@@ -56,7 +56,7 @@ class Board extends Component<{}, BoardState> {
 
     return <Box className={"board_cnt"}>
       <Box className="board_section_cnt bg_purple">
-        <Typography variant="h4" sx={{ fontWeight: 600 }}>
+        <Typography variant="h5" sx={{ fontWeight: 600 }}>
           本月支出
         </Typography>
       </Box>
@@ -64,7 +64,7 @@ class Board extends Component<{}, BoardState> {
         <SummaryTable records={state.datas}></SummaryTable>
       </Box>
       <Box className="board_section_cnt bg_yellow">
-        <Typography variant="h4" sx={{ fontWeight: 600 }}>
+        <Typography variant="h5" sx={{ fontWeight: 600 }}>
           近期支出
         </Typography>
       </Box>
@@ -73,7 +73,7 @@ class Board extends Component<{}, BoardState> {
           <Grid item sm={1} xs={1}>
             <Box>
               <Box className="board_table_title color_green">
-                <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>
                   今日支出
                 </Typography>
               </Box>
@@ -85,7 +85,7 @@ class Board extends Component<{}, BoardState> {
           <Grid item sm={1} xs={1}>
             <Box>
               <Box className="board_table_title color_orange">
-                <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>
                   近七天支出
                 </Typography>
               </Box>
