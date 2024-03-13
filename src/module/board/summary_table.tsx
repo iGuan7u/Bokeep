@@ -122,6 +122,7 @@ class SummaryTable extends Component<SummaryTableProps, SummaryTableState> {
         <TableRow>
           {state.datas.length != 0 && columns.map((column) => (
             <TableCell
+              className='table_th'
               key={column.id}
               align={column.align}
               style={{ minWidth: column.minWidth, padding: '6px' }}

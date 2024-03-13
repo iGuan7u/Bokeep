@@ -147,7 +147,7 @@ class Database extends Component<{}, DatabaseState> {
           <TableRow>
             {this.state.datas.length != 0 && columns.map((column) => (
               <TableCell
-                className='table-header-th'
+                className='table_th table-header-th'
                 key={column.id}
                 align={column.align}
                 style={{ minWidth: column.minWidth, padding: '6px' }}
