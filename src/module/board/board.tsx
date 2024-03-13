@@ -54,7 +54,7 @@ class Board extends Component<{}, BoardState> {
     const recordOfToday = state.datas.filter(e => e.spendTime >= startOfDay && e.spendTime <= endOfDay);
     const recordOfWeek = state.datas.filter(e => e.spendTime >= sevenDaysAgo && e.spendTime <= endOfDay);
 
-    return <Box className={"board_cnt"}>
+    return <Box>
       <Box className="board_section_cnt bg_purple">
         <Typography variant="h5" sx={{ fontWeight: 600 }}>
           本月支出

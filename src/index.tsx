@@ -18,6 +18,7 @@ import { addRecord, openIndexedDB } from './utils/indexd_db';
 import Database from './module/database';
 import Match from 'preact-router/match';
 import Board from './module/board/board';
+import { isIOS, isMobileDevice } from './utils/ua';
 
 interface AppState {
   isModalOpen: boolean;
@@ -33,7 +34,7 @@ class App extends Component<{}, AppState> {
       isModalOpen: false,
       mobileOpen: false,
       isClosing: false,
-      isMobile: false,
+      isMobile: isMobileDevice(),
     };
   }
   handleClose = () => {
@@ -99,12 +100,17 @@ class App extends Component<{}, AppState> {
         }} 
         elevation={0}
       >
-        <Toolbar>
+        <Toolbar sx={{
+          minHeight: state.isMobile ? '44px' : null
+        }}>
           <IconButton
             edge="start"
             aria-label="menu"
             onClick={this.handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' }}}
+            sx={{ 
+              mr: 2,
+              display: { sm: 'none' },
+            }}
           >
             <MenuIcon />
           </IconButton>
@@ -120,6 +126,7 @@ class App extends Component<{}, AppState> {
         />
       <Box
         component="main"
+        className={{ "mobile": state.isMobile }}
         sx={{
           marginLeft: { sm: `${drawerWidth}px` }
         }}

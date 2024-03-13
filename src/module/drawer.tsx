@@ -70,7 +70,6 @@ class NavDrawer extends Component<NavDrawerProps & DrawerProps, NavDrawerState> 
                     <ListItemIcon>
                       {item.icon}
                     </ListItemIcon>
-                    <ListItemText primary={item.text} />
                   </ListItemButton>
                 </ListItem>
               ))}
@@ -86,7 +85,6 @@ class NavDrawer extends Component<NavDrawerProps & DrawerProps, NavDrawerState> 
                     <ListItemIcon>
                       {item.icon}
                     </ListItemIcon>
-                    <ListItemText primary={item.text} />
                   </ListItemButton>
                 </ListItem>
               ))}

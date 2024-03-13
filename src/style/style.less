@@ -88,10 +88,6 @@ td.no_boarder {
 	left: 0;
 }
 
-.board_cnt {
-	padding: 8px 0;
-}
-
 .board_section_cnt {
 	margin: 12px 3%;
 	padding: 4px 0;
@@ -136,6 +132,16 @@ td.no_boarder {
 .board_table_overflow {
 	overflow-x: auto;
 	margin-top: 12px;
+}
+
+@media (max-width: 600px) {
+	main.mobile th.table-header-th {
+		top: 44px;
+	}
+
+	main.mobile .navigation_bar_placeholder {
+		height: 44px;
+	}
 }
 
 // 大于等于 600px
