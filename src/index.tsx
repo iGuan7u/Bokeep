@@ -128,7 +128,8 @@ class App extends Component<{}, AppState> {
         component="main"
         className={{ "mobile": state.isMobile }}
         sx={{
-          marginLeft: { sm: `${drawerWidth}px` }
+          marginLeft: { sm: `${drawerWidth}px` },
+          padding: { sm: '0 30px' }
         }}
       >
         <div className="navigation_bar_placeholder"></div>

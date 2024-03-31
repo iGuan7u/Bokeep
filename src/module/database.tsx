@@ -184,7 +184,6 @@ class Database extends Component<{}, DatabaseState> {
               <span className="table_sum_prefix">COUNT: </span> {state.datas.length}</TableCell>
             <TableCell key="sum_price" className="no_boarder" align="right" >
               <span className="table_sum_prefix">SUM: CN¥</span> {sumPrice.toFixed(2)} </TableCell>
-            <TableCell key="sum_tag"></TableCell>
           </TableRow>
         </TableBody>
       </Table>

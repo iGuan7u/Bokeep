@@ -49,12 +49,6 @@ const columns: readonly TableColumn[] = [
     minWidth: 100,
     align: 'right',
   },
-  {
-    id: 'budget',
-    label: '预算',
-    minWidth: 100,
-    align: 'right',
-  },
 ];
 
 interface SummaryTableProps {
@@ -108,7 +102,10 @@ class SummaryTable extends Component<SummaryTableProps, SummaryTableState> {
     this.setState({
       datas: datas.sort((a, b) => a.costType - b.costType)
     });
-  
+  }
+
+  private handleClick(vent: MouseEvent, costType: CostType) {
+
   }
 
   render(props?: RenderableProps<SummaryTableProps, any>, state?: Readonly<SummaryTableState>, context?: any): ComponentChild {
@@ -117,6 +114,11 @@ class SummaryTable extends Component<SummaryTableProps, SummaryTableState> {
         <Typography>暂无数据</Typography>
       </Box>;
     }
+
+    let sumPrice = 0;
+    state.datas.forEach((e) => {
+      sumPrice += e.totalPrice;
+    });
     return <Table padding='none'>
       <TableHead>
         <TableRow>
@@ -139,6 +141,8 @@ class SummaryTable extends Component<SummaryTableProps, SummaryTableState> {
               <TableRow
                 hover
                 tabIndex={-1}
+                onClick={(event: MouseEvent) => this.handleClick(event, row.costType)}
+                sx={{ cursor: 'pointer' }}
               >
                 {columns.map((column) => {
                   const value = row[column.id];
@@ -154,6 +158,13 @@ class SummaryTable extends Component<SummaryTableProps, SummaryTableState> {
               </TableRow>
             );
           })}
+        <TableRow>
+          <TableCell key="sum_name" className="no_boarder" align="right">
+            <span className="table_sum_prefix">COUNT: </span> {state.datas.length}</TableCell>
+          <TableCell key="sum_price" className="no_boarder" align="right" >
+            <span className="table_sum_prefix">SUM: CN¥</span> {sumPrice.toFixed(2)} </TableCell>
+          <TableCell key="sum_tag" className="no_boarder"></TableCell>
+        </TableRow>
       </TableBody>
     </Table>
   }

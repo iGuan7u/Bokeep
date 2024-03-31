@@ -56,10 +56,10 @@ class BriefTable extends Component<BriefTableProps, {}> {
         <Typography>暂无数据</Typography>
       </Box>;
     }
-    var sumPrice = 0;
+    let sumPrice = 0;
     props.datas.forEach((e) => {
       sumPrice += e.price;
-    })
+    });
     return <Table padding='none'>
       <TableHead>
         <TableRow>
