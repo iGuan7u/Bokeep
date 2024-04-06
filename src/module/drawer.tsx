@@ -40,7 +40,7 @@ class NavDrawer extends Component<NavDrawerProps & DrawerProps, NavDrawerState> 
         isSelected: (index, path) => (index == 0 && (path === "/" || path == null)),
         href: "/"
       }, {
-        icon:  <Storage />,
+        icon: <Storage />,
         text: "Datas",
         isSelected: (index, path) => (index == 1 && path === "/db"),
         href: "/db"
@@ -48,15 +48,15 @@ class NavDrawer extends Component<NavDrawerProps & DrawerProps, NavDrawerState> 
       settingItems: [{
         icon: <Settings />,
         text: "Settings",
-        isSelected: (index, path) => (index == 0 && path === "/settings"),
-        href: "/settings"
+        isSelected: (index, path) => (index == 0 && path === "/setting"),
+        href: "/setting"
       }]
     };
   }
   render(props?: Readonly<NavDrawerProps & DrawerProps & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<NavDrawerState>, context?: any): ComponentChild {
     const drawer = (
       <div>
-        <Toolbar/>
+        <Toolbar />
         <Divider />
         <Match>
           {({ matches, path, url }) => <>
@@ -74,7 +74,7 @@ class NavDrawer extends Component<NavDrawerProps & DrawerProps, NavDrawerState> 
                 </ListItem>
               ))}
             </List>
-            { state.settingItems.length != 0 && <Divider /> }
+            {state.settingItems.length != 0 && <Divider />}
             <List>
               {state.settingItems.map((item, index) => (
                 <ListItem key={item.href} disablePadding>

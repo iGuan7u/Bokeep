@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 
 import './style/style.less';
 import mainTheme from './static/theme';
-import { drawerWidth} from './static/static';
+import { drawerWidth } from './static/static';
 import CostRecord from './model/record';
 import CreateDialog from './module/create_dialog';
 import NavDrawer from './module/drawer';
@@ -19,6 +19,7 @@ import Database from './module/database';
 import Match from 'preact-router/match';
 import Board from './module/board/board';
 import { isIOS, isMobileDevice } from './utils/ua';
+import Setting from './module/setting';
 
 interface AppState {
   isModalOpen: boolean;
@@ -91,13 +92,13 @@ class App extends Component<{}, AppState> {
 
   render(props?: Readonly<Attributes & { children?: ComponentChildren; ref?: Ref<any>; }>, state?: Readonly<AppState>, context?: any): ComponentChild {
     return <ThemeProvider theme={mainTheme}>
-      <AppBar 
-        className="fixed_navigation_bar" 
+      <AppBar
+        className="fixed_navigation_bar"
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-        }} 
+        }}
         elevation={0}
       >
         <Toolbar sx={{
@@ -107,7 +108,7 @@ class App extends Component<{}, AppState> {
             edge="start"
             aria-label="menu"
             onClick={this.handleDrawerToggle}
-            sx={{ 
+            sx={{
               mr: 2,
               display: { sm: 'none' },
             }}
@@ -123,7 +124,7 @@ class App extends Component<{}, AppState> {
         open={this.state.mobileOpen}
         onTransitionEnd={this.handleDrawerTransitionEnd}
         onClose={this.handleDrawerClose}
-        />
+      />
       <Box
         component="main"
         className={{ "mobile": state.isMobile }}
@@ -136,16 +137,19 @@ class App extends Component<{}, AppState> {
         <Router>
           <Board path="/" default />
           <Database path='/db' />
+          <Setting path='/setting'></Setting>
         </Router>
       </Box>
+      <Match>{({ matches, path, url }) => url !== '/setting' &&
+        <Fab className={"float_button"} color="primary" aria-label="add" onClick={this.handleClickOpen}>
+          <AddIcon />
+        </Fab>}
+      </Match>
       <CreateDialog
         open={this.state.isModalOpen}
         onFinished={this.handleCreate}
         onClose={this.handleClose}
       />
-      <Fab className={"float_button"} color="primary" aria-label="add" onClick={this.handleClickOpen}>
-        <AddIcon />
-      </Fab>
     </ThemeProvider>;
   }
 }
