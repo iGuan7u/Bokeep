@@ -7,6 +7,7 @@ import Alert from '@mui/material/Alert';
 
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
+import SyncService from "./sync";
 
 interface ISettingState {
   serverAddress?: string
@@ -21,11 +22,26 @@ interface IVerifyResult {
   ret: number
 };
 
+interface IUserInfoResult {
+  ret: number
+  id: string
+}
+
 const serverAddressId = "setting_server_address";
 const serverTokenId = "setting_server_token";
 const serverUserNameId = "sever_user_name";
 
 class Setting extends Component<{}, ISettingState> {
+  componentWillMount(): void {
+    this.setState({
+      toastShown: false,
+      serverAddress: window.localStorage.getItem("SETTING_SERVER_ADDRESS"),
+      serverToken: window.localStorage.getItem("SETTING_SERVER_TOKEN"),
+      serverUserName: window.localStorage.getItem("SETTING_SERVER_USER_NAME"),
+    });
+
+  }
+
   onButtonClick = async () => {
     this.setState({
       toastShown: true,
@@ -38,7 +54,8 @@ class Setting extends Component<{}, ISettingState> {
       return;
     }
     try {
-      const result = await fetch(`${window.location.protocol}//${serverAddress}`, {
+      // const result = await fetch(`${window.location.protocol}//${serverAddress}`, {
+      const result = await fetch(`https://${serverAddress}/verify`, {
         method: 'POST',
         headers: {
           Authorization: `Token ${serverToken}`
@@ -54,11 +71,40 @@ class Setting extends Component<{}, ISettingState> {
         toastShown: false,
         verifyResult: result.ret == 0,
       });
+      if (result.ret == 0) {
+        this.setState({
+          serverAddress: serverAddress,
+          serverToken: serverToken,
+        });
+        window.localStorage.setItem("SETTING_SERVER_ADDRESS", serverAddress);
+        window.localStorage.setItem("SETTING_SERVER_TOKEN", serverToken);
+        this.loadUserInfo(serverUserName);
+      }
     } catch (error) {
       this.setState({
         snackBarShown: true,
         toastShown: false,
         verifyResult: false,
+      });
+    }
+  }
+
+  loadUserInfo = async (serverUserName: string) => {
+    const result = await fetch(`https://${this.state.serverAddress}/user/${serverUserName}`, {
+      headers: {
+        Authorization: `Token ${this.state.serverToken}`
+      }
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    }) as IUserInfoResult;
+    if (result.ret == 0 && result.id.length != 0) {
+      window.localStorage.setItem("SETTING_SERVER_USER_NAME", serverUserName);
+      window.localStorage.setItem("SETTING_SERVER_USER_ID", result.id);
+      this.setState({
+        serverUserName: serverUserName
       });
     }
   }

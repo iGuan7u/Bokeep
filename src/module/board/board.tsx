@@ -7,6 +7,7 @@ import CostRecord from "../../model/record";
 import BriefTable from "./brief_table";
 import { deleteRecord, openIndexedDB, updateRecord, indexedDBEventEmitter, readSpendTimeRangeRecords } from '../../utils/indexd_db';
 import SummaryTable from "./summary_table";
+import SyncService from "../sync";
 
 interface BoardState {
   datas: Array<CostRecord>
@@ -22,6 +23,7 @@ class Board extends Component<{}, BoardState> {
   componentDidMount = () => {
     this.updateData();
     indexedDBEventEmitter.on(this.updateData);
+    SyncService.startSync();
   }
 
   componentWillUnmount(): void {
@@ -50,9 +52,12 @@ class Board extends Component<{}, BoardState> {
     const endOfDay = currentTime.endOf('day').valueOf();
     // 计算七天前的时间
     const sevenDaysAgo = currentTime.subtract(7, 'day').valueOf();
+    // 计算本月的起始时间
+    const monthDayStart = currentTime.startOf('month').valueOf();
 
     const recordOfToday = state.datas.filter(e => e.spendTime >= startOfDay && e.spendTime <= endOfDay);
     const recordOfWeek = state.datas.filter(e => e.spendTime >= sevenDaysAgo && e.spendTime <= endOfDay);
+    const recordOfMonth = state.datas.filter(e => e.spendTime >= monthDayStart);
 
     return <Box>
       <Box className="board_section_cnt bg_purple">
@@ -61,7 +66,7 @@ class Board extends Component<{}, BoardState> {
         </Typography>
       </Box>
       <Box className="board_table_overflow">
-        <SummaryTable records={state.datas}></SummaryTable>
+        <SummaryTable records={recordOfMonth}></SummaryTable>
       </Box>
       <Box className="board_section_cnt bg_yellow">
         <Typography variant="h5" sx={{ fontWeight: 600 }}>
