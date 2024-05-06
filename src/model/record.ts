@@ -9,6 +9,7 @@ export default class CostRecord {
   costType: CostType;
   spendTime: number;
   createTime: number;
+  updateTime: number;
   creator: string;
   remarks?: string;
 
@@ -20,7 +21,8 @@ export default class CostRecord {
     creator: string,
     remarks?: string,
     id: string = crypto.randomUUID(),
-    createTime = Date.now()
+    createTime = Date.now(),
+    updateTime?: number,
   ) {
     this.name = name;
     this.price = price;
@@ -30,6 +32,7 @@ export default class CostRecord {
     this.remarks = remarks;
     this.creator = creator;
     this.createTime = createTime;
+    this.updateTime = updateTime ?? createTime;
   }
 
   static create(jsonObject: object): CostRecord {
@@ -73,6 +76,7 @@ export default class CostRecord {
     record.price = price;
     record.spendTime = spendTime;
     record.costType = costType;
+    record.updateTime = Date.now();
     const remarks = jsonObject["remarks"] as string;
     if (remarks != null) {
       record.remarks = remarks;
@@ -89,6 +93,7 @@ export default class CostRecord {
       record.remarks,
       record.id,
       record.createTime,
+      record.updateTime,
     );
   }
 }
