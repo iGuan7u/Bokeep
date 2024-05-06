@@ -141,7 +141,7 @@ class Database extends Component<{}, DatabaseState> {
     state.datas.forEach((e) => {
       sumPrice += e.price;
     })
-    return <>
+    return <div class="db_main_cnt">
       <Table padding='none'>
         <TableHead>
           <TableRow>
@@ -194,7 +194,7 @@ class Database extends Component<{}, DatabaseState> {
         onDeleted={this.handleOnDelete}
         onClose={this.handleClose}
       />
-    </>;
+    </div>;
   }
 }
 
