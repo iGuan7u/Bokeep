@@ -5,7 +5,7 @@
 		"dev": "vite --host",
 		"build": "vite build",
 		"preview": "vite preview",
-		"deploy": "mv ./dist ./bk && scp -r ./bk Tencent-2C4G-GZ:/home/ubuntu/Workspace/nginx/www && rm -r ./bk"
+		"deploy": "rsync -r ./dist/* Tencent-4C8G-SH:/home/iguan7u/Workspace/nginx/www/bk"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.11.3",
